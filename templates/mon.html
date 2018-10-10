@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content%}
+
+<h1>APS</h1>
+
+<table style="width:100%">
+    <tr>
+        {% for column in aps_columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+    </tr>
+      {% for ap in aps %}
+        <tr>
+            {% for column in aps_columns %}
+                <td>{{ ap[column] }}</td>
+            {% endfor %}
+        </tr>
+      {% endfor %}
+</table>
+
+<h1>STATIONS</h1>
+
+
+<table style="width:100%">
+    <tr>
+        {% for column in sts_columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+    </tr>
+      {% for st in sts %}
+        <tr>
+            {% for column in sts_columns %}
+                <td>{{ st[column] }}</td>
+            {% endfor %}
+        </tr>
+      {% endfor %}
+</table>
+
+{% endblock%}
