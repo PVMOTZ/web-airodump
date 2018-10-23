@@ -2,41 +2,31 @@
 Classes para guardar valores do Tshark
 """
 import pyshark
-import time
 from threading import Thread
 from pylib.helper import *
+from pylib.wifi import AP, Station
+
 
 class Monitoramento:
 
     def __init__(self):
         self.aps = {}
         self.stations = {}
-        self.connections = {}
-        self.capture = None
 
     def get_aps(self):
-        aps_list = []
 
-        for a in self.aps:
-            aps_list.append(self.aps[a])
-
-        return aps_list
+        return list(self.aps.values())
 
     def get_stations(self):
 
-        stations_list = []
-
-        for a in self.stations:
-            stations_list.append(self.stations[a])
-
-        return stations_list
+        return list(self.stations.values())
 
     def start(self, interface):
         """
         Inicia o monitoramento atravez da interface
         """
         self.capture = pyshark.LiveCapture(interface=interface)
-        self.capture.sniff_continuously(packet_count=1)
+        self.capture.sniff_continuously(packet_count=50)
 
         # executando em thread
         t = Thread(target=self.__start, args=(interface,))
@@ -56,9 +46,7 @@ class Monitoramento:
         """
         pkt = args[0]
 
-        pkt_info = pkt_simple_info_extractor(pkt)
-        pkt_type = pkt_info['type']
-
+        pkt_type = int(pkt.wlan.fc_type)
 
         if pkt_type == MANAGEMENT_FRAME:
             self.__managament_frame(pkt)
@@ -74,11 +62,14 @@ class Monitoramento:
 
         # Check beacon frame
         if pkt_info['subtype'] == BEACON:
-            ap_info = ap_info_extractor(pkt)
-            ap_bssid = ap_info['bssid']
+            ssid  = pkt.layers[3].ssid
+            channel  = pkt.wlan_radio.channel
+            bssid = pkt.wlan.bssid
 
-            self.aps[ap_bssid] = ap_info
+            if bssid not in self.aps:
+                ap = AP(bssid, ssid, channel)
 
+                self.aps[bssid] = ap
 
     def __control_frame(self, pkt):
         pass
@@ -89,12 +80,17 @@ class Monitoramento:
 
         # Se existe dados sendo transmitidos dos APs para as estações
         if pkt_info['subtype'] == 40:
+            src_mac = pkt.wlan.ta
+            dst_mac = pkt.wlan.ra
 
-            pkt_data_info = data_info_extractor(pkt)
+            # Se a origem for um AP e o destino for uma estação
+            if src_mac in self.aps and dst_mac != 'ff:ff:ff:ff:ff:ff':
+                if dst_mac not in self.stations:
+                    station = Station(mac=dst_mac, ap=src_mac)
 
-            if pkt_data_info['ta'] in self.aps:
-                if pkt_data_info['da'] not in self.stations:
-                    self.stations[pkt_data_info['da']] = {'mac' : pkt_data_info['da'],'conectado' : pkt_data_info['ta']}
+                    self.stations[dst_mac] = station
+                else:
+                    self.stations[dst_mac].ap = src_mac
 
     def clear(self):
         pass

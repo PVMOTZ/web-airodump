@@ -1,8 +1,8 @@
 """
 Interface
 """
-from pylib.classes import Monitoramento
-
+from pylib.mon import Monitoramento
+from pylib.helper import interfaces_list, interface_mode
 
 """
 Fachada Web-AiroDump
@@ -17,8 +17,9 @@ class Wairodump():
         get a list with the wireless interfaces up
         :return: string list
         """
-        #"duck"
-        return ['wlp3s0mon']
+        ilist = interfaces_list()
+
+        return ilist
 
     def get_aps(self):
         """
@@ -36,26 +37,6 @@ class Wairodump():
 
         return self.mon.get_stations()
 
-    def get_aps_columns(self):
-        aps = self.mon.get_aps()
-
-        if aps:
-            columns = aps[0]
-
-            return list(columns.keys())
-        else:
-            return None
-
-    def get_stations_columns(self):
-
-        sts = self.mon.get_stations()
-
-        if sts:
-            columns = sts[0]
-
-            return list(columns.keys())
-        else:
-            return None
 
     def start_monitoring(self, interface):
         """

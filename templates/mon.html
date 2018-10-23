@@ -5,17 +5,17 @@
 
 <table style="width:100%">
     <tr>
-        {% for column in aps_columns %}
-        <th>{{ column }}</th>
-        {% endfor %}
+        <th>BSSID</th>
+        <th>SSID</th>
+        <th>CHANNEL</th>
     </tr>
-      {% for ap in aps %}
-        <tr>
-            {% for column in aps_columns %}
-                <td>{{ ap[column] }}</td>
-            {% endfor %}
-        </tr>
-      {% endfor %}
+    {% for ap in aps %}
+    <tr>
+        <td>{{ ap.mac }}</td>
+        <td>{{ ap.ssid }}</td>
+        <td>{{ ap.channel }}</td>
+    </tr>
+    {% endfor %}
 </table>
 
 <h1>STATIONS</h1>
@@ -23,17 +23,15 @@
 
 <table style="width:100%">
     <tr>
-        {% for column in sts_columns %}
-        <th>{{ column }}</th>
-        {% endfor %}
+        <th>MAC</th>
+        <th>Conectado</th>
     </tr>
-      {% for st in sts %}
+    {% for st in stations %}
         <tr>
-            {% for column in sts_columns %}
-                <td>{{ st[column] }}</td>
-            {% endfor %}
+            <td>{{ st.mac }}</td>
+            <td>{{ st.ap }}</td>
         </tr>
-      {% endfor %}
+    {% endfor %}
 </table>
 
 {% endblock%}

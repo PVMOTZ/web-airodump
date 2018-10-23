@@ -1,6 +1,7 @@
 """
 Temporario Helper.py
 """
+import netifaces as neti
 
 """
 WLAN constantes para TYPE/SUBTYPE 
@@ -48,51 +49,6 @@ def pkt_simple_info_extractor(pkt):
 
 	return ref
 
-
-def pkt_radio_info_extractor(pkt):
-	"""
-	Dado um pacote WLAN, retorna um dicionario contendo os labels:
-
-	channel
-  	frequency
-  	signal
-  	data_rate
-  	phy
-	"""
-
-	ref = {}
-
-	ref['channel']  = pkt.wlan_radio.channel
-	ref['frequency']= pkt.wlan_radio.frequency
-	ref['signal'] = pkt.wlan_radio.signal_dbm
-	#ref['data_rate']= pkt.wlan_radio.data_rate
-	#ref['phy']   = pkt.wlan_radio.phy
-
-	return ref
-
-
-def ap_info_extractor(pkt):
-	"""
- 	Dado um pacote WLAN, retorna um dicionario contendo os labels:
-
-  	bssid
-  	type
-  	subtype
-  	addr
-  	ssid
-	"""
-
-	ref = {} 
-	ref['bssid']  = pkt.wlan.bssid
-	ref['ssid']  = pkt.layers[3].ssid
-
-	# adicionando dados de radio
-	radio_info = pkt_radio_info_extractor(pkt)
-	ref.update(radio_info)
-
-	return ref
-
-
 def data_info_extractor(pkt):
     """
     labels:
@@ -109,4 +65,26 @@ def data_info_extractor(pkt):
 
     return ref
 
+"""
+Linux Interface helper
+"""
+def interfaces_list():
+    """
 
+    :return: wireless interfaces list
+    """
+    ilist = net.interfaces()
+
+    """
+    TODO
+    Checar quais são interfaces Wireless
+    """
+
+    return ilist
+
+def interface_mode(interface):
+    """
+    TODO
+    """
+
+    return None
