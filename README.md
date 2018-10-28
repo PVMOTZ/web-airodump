@@ -1,11 +1,13 @@
-# Web-Airodump
-
+# MACtrix
 
 Dependencias:
 
 tshark
 pyshark
-netifaces
 flask
 
-Rodar o programa flaskapp.py como root.
+Para rodar o programa:
+./mactrix [Interface_Wireless] [Canal de escuta]
+
+Interface_Wireless - Interface wireless deve está no modo monitor
+Canal de escuta - Escolher entre 1/6/11

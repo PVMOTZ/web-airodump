@@ -13,6 +13,11 @@ class Monitoramento:
         self.aps = {}
         self.stations = {}
 
+    def get_ap(self, bssid):
+
+        if bssid in self.aps:
+            return self.aps[bssid]
+
     def get_aps(self):
 
         return list(self.aps.values())

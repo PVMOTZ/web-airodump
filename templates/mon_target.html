@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% block content%}
+
+<h1>{{ ap.ssid }}</h1> <h1>{{ ap.bssid }}</h1>
+
+<h2>STATIONS<h2/>
+
+<table style="width:100%">
+
+{% for st in stations %}
+    <tr>
+        <td>{{ st.mac }}</td>
+    </tr>
+{% endfor %}
+
+{% endblock%}

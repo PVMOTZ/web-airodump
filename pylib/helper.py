@@ -1,7 +1,34 @@
 """
 Temporario Helper.py
 """
-import netifaces as neti
+"""
+PyShark PKT Helper Extractor
+"""
+def pkt_simple_info_extractor(pkt):
+
+	ref = {}
+
+	ref['type'] = int(pkt.wlan.fc_type)
+	ref['subtype'] = int(pkt.wlan.fc_type_subtype)
+
+	return ref
+
+def data_info_extractor(pkt):
+    """
+    labels:
+    """
+
+    ref = {}
+
+    ref['sa'] = pkt.wlan.sa
+    ref['da'] = pkt.wlan.da
+    ref['ta'] = pkt.wlan.ta
+    ref['ra'] = pkt.wlan.ra
+    ref['type'] = int(pkt.wlan.fc_type)
+    ref['subtype'] = int(pkt.wlan.fc_type_subtype)
+
+    return ref
+
 
 """
 WLAN constantes para TYPE/SUBTYPE 
@@ -36,55 +63,3 @@ DATA_FRAME = 2
 
 # Subtypes
 NULL_DATA = 36
-
-"""
-PyShark PKT Helper Extractor
-"""
-def pkt_simple_info_extractor(pkt):
-
-	ref = {}
-
-	ref['type'] = int(pkt.wlan.fc_type)
-	ref['subtype'] = int(pkt.wlan.fc_type_subtype)
-
-	return ref
-
-def data_info_extractor(pkt):
-    """
-    labels:
-    """
-
-    ref = {}
-
-    ref['sa'] = pkt.wlan.sa
-    ref['da'] = pkt.wlan.da
-    ref['ta'] = pkt.wlan.ta
-    ref['ra'] = pkt.wlan.ra
-    ref['type'] = int(pkt.wlan.fc_type)
-    ref['subtype'] = int(pkt.wlan.fc_type_subtype)
-
-    return ref
-
-"""
-Linux Interface helper
-"""
-def interfaces_list():
-    """
-
-    :return: wireless interfaces list
-    """
-    ilist = net.interfaces()
-
-    """
-    TODO
-    Checar quais são interfaces Wireless
-    """
-
-    return ilist
-
-def interface_mode(interface):
-    """
-    TODO
-    """
-
-    return None

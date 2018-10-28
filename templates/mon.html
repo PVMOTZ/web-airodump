@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content%}
 
+<div1>
 <h1>APS</h1>
-
-<table style="width:100%">
+<table style="width:40%">
     <tr>
         <th>BSSID</th>
         <th>SSID</th>
@@ -11,16 +11,16 @@
     </tr>
     {% for ap in aps %}
     <tr>
-        <td>{{ ap.mac }}</td>
+        <td><a href="/mon/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
         <td>{{ ap.ssid }}</td>
         <td>{{ ap.channel }}</td>
     </tr>
     {% endfor %}
 </table>
+</div1>
 
+<div2>
 <h1>STATIONS</h1>
-
-
 <table style="width:100%">
     <tr>
         <th>MAC</th>
@@ -33,5 +33,39 @@
         </tr>
     {% endfor %}
 </table>
+</div2>
+
+<div3 align="center">
+<h1>OCULTOS</h1>
+<table style=width:30%>
+
+<tr>
+MAC
+<td>
+</td>
+</tr>
+</table>
+
+
+
+<h1>ATAQUE</h1>
+<table style=width:30%>
+<tr> TIPO </tr>
+<th>
+<td>
+Deauth
+</td>
+<td>
+flood
+</td>
+<td>
+Association
+</td>
+<td>
+Deassociation
+</td>
+</th>
+</table>
+</div3>
 
 {% endblock%}
