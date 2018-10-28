@@ -1,0 +1,23 @@
+tr, td {
+
+    padding: 4px;
+    text-align: left;
+    border: 2px solid #ddd;
+
+}
+.left{
+   float:left;
+   width:30%;
+}
+
+div1{
+    float:left;
+    }
+
+div2 {
+    float:left;
+}
+
+div3 {
+    float:left;
+}
