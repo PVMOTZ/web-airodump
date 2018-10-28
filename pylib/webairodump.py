@@ -17,8 +17,8 @@ class Wairodump():
 
     def get_aps(self):
         """
-        Return a dict d with aps mac, where d[mac] = ap information
-        :return:
+        Return a list with aps
+        :return: [aps]
         """
 
         return self.mon.get_aps()
@@ -31,6 +31,9 @@ class Wairodump():
 
         return self.mon.get_stations()
 
+    def get_attackers(self):
+
+        return self.mon.get_attackers()
 
     def start_monitoring(self, interface):
         """

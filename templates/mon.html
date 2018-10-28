@@ -10,13 +10,32 @@
         <th>CHANNEL</th>
     </tr>
     {% for ap in aps %}
-    <tr>
-        <td><a href="/mon/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
-        <td>{{ ap.ssid }}</td>
-        <td>{{ ap.channel }}</td>
-    </tr>
+        {% if ap.ssid %}
+            <tr>
+                <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
+                <td>{{ ap.ssid }}</td>
+                <td>{{ ap.channel }}</td>
+            </tr>
+        {% endif %}
     {% endfor %}
 </table>
+
+<h1>OCULTOS</h1>
+<table style=width:30%>
+    <tr>
+        <th>BSSID</th>
+        <th>CHANNEL</th>
+    </tr>
+    {% for ap in aps %}
+        {% if not ap.ssid %}
+            <tr>
+                <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
+                <td>{{ ap.channel }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
 </div1>
 
 <div2>
@@ -36,36 +55,20 @@
 </div2>
 
 <div3 align="center">
-<h1>OCULTOS</h1>
-<table style=width:30%>
-
-<tr>
-MAC
-<td>
-</td>
-</tr>
+<h1>ATAQUES</h1>
+<table style="width:100%">
+    <tr>
+        <th>MAC</th>
+        <th>Atacando</th>
+    </tr>
+    {% for (attacker, ap) in attackers %}
+        <tr>
+            <td>{{ attacker }}</td>
+            <td>{{ ap }}</td>
+        </tr>
+    {% endfor %}
 </table>
 
-
-
-<h1>ATAQUE</h1>
-<table style=width:30%>
-<tr> TIPO </tr>
-<th>
-<td>
-Deauth
-</td>
-<td>
-flood
-</td>
-<td>
-Association
-</td>
-<td>
-Deassociation
-</td>
-</th>
-</table>
 </div3>
 
 {% endblock%}

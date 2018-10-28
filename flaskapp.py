@@ -19,16 +19,19 @@ def mon(interface=None):
     # get aps
     aps = web_mon.get_aps()
     sts = web_mon.get_stations()
+    att = web_mon.get_attackers()
 
     return render_template("mon.html",  aps = aps,
-                                        stations = sts)
+                                        stations = sts,
+                                        attackers = att)
 
 
-@app.route("/mon/ap/<bssid>")
+@app.route("/ap/<bssid>")
 def mon_target(bssid):
     # get aps
     ap = web_mon.get_ap(bssid)
     sts = web_mon.get_stations()
+    att = web_mon.get_attackers()
 
     stations = []
     for st in sts:
@@ -36,6 +39,7 @@ def mon_target(bssid):
             stations.append(st)
 
     return render_template("mon_target.html",  ap = ap,
-                                        stations = stations)
+                                        stations = stations,
+                                        attackers = att)
 
 app.run(debug=True, use_reloader=True)

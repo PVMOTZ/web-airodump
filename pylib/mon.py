@@ -12,6 +12,7 @@ class Monitoramento:
     def __init__(self):
         self.aps = {}
         self.stations = {}
+        self.attackers = []
 
     def get_ap(self, bssid):
 
@@ -25,6 +26,10 @@ class Monitoramento:
     def get_stations(self):
 
         return list(self.stations.values())
+
+    def get_attackers(self):
+
+        return self.attackers
 
     def start(self, interface):
         """
@@ -79,14 +84,13 @@ class Monitoramento:
     def __control_frame(self, pkt):
         pass
 
-
     def __data_frame(self, pkt):
         pkt_info = pkt_simple_info_extractor(pkt)
 
         # Se existe dados sendo transmitidos dos APs para as estações
-        if pkt_info['subtype'] == 40:
-            src_mac = pkt.wlan.ta
-            dst_mac = pkt.wlan.ra
+        if pkt_info['subtype'] in [40, 36]:
+            src_mac = pkt.wlan.sa
+            dst_mac = pkt.wlan.da
 
             # Se a origem for um AP e o destino for uma estação
             if src_mac in self.aps and dst_mac != 'ff:ff:ff:ff:ff:ff':
@@ -96,6 +100,19 @@ class Monitoramento:
                     self.stations[dst_mac] = station
                 else:
                     self.stations[dst_mac].ap = src_mac
+
+                # removendo caso seja achado
+                if (dst_mac, src_mac) in self.attackers:
+                    self.attackers.remove((dst_mac, src_mac))
+
+            # Checando por ataques
+            if dst_mac in self.aps and src_mac not in self.stations:
+
+                if (src_mac, dst_mac) in self.attackers:
+                    return None
+
+                self.attackers.append((src_mac, dst_mac))
+
 
     def clear(self):
         pass

@@ -28,4 +28,3 @@ class Station(Device):
         self.ap = ap
 
 
-
