@@ -14,3 +14,18 @@
 {% endfor %}
 
 {% endblock %}
+
+<h1>ATACANTES</h1>
+<table style="width:100%">
+    <tr>
+        <th>MAC</th>
+        <th>Número de Pacotes</th>
+    </tr>
+    {% for att in attackers %}
+        <tr>
+            <td>{{ att.src_mac }}</td>
+            <td>{{ att.dst_mac }}</td>
+            <td>{{ att.count }}</td>
+        </tr>
+    {% endfor %}
+</table>

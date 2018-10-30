@@ -4,7 +4,7 @@ Classes para guardar valores do Tshark
 import pyshark
 from threading import Thread
 from pylib.helper import *
-from pylib.wifi import AP, Station
+from pylib.wifi import AP, Station, Attacker
 
 
 class Monitoramento:
@@ -12,7 +12,7 @@ class Monitoramento:
     def __init__(self):
         self.aps = {}
         self.stations = {}
-        self.attackers = []
+        self.attackers = {}
 
     def get_ap(self, bssid):
 
@@ -29,7 +29,7 @@ class Monitoramento:
 
     def get_attackers(self):
 
-        return self.attackers
+        return list(self.attackers.values())
 
     def start(self, interface):
         """
@@ -82,37 +82,50 @@ class Monitoramento:
                 self.aps[bssid] = ap
 
     def __control_frame(self, pkt):
-        pass
-
-    def __data_frame(self, pkt):
-        pkt_info = pkt_simple_info_extractor(pkt)
-
         # Se existe dados sendo transmitidos dos APs para as estações
-        if pkt_info['subtype'] in [40, 36]:
+        try:
             src_mac = pkt.wlan.sa
             dst_mac = pkt.wlan.da
 
-            # Se a origem for um AP e o destino for uma estação
-            if src_mac in self.aps and dst_mac != 'ff:ff:ff:ff:ff:ff':
-                if dst_mac not in self.stations:
-                    station = Station(mac=dst_mac, ap=src_mac)
+            self.__process(src_mac, dst_mac)
+        except:
+            pass
 
-                    self.stations[dst_mac] = station
-                else:
-                    self.stations[dst_mac].ap = src_mac
+    def __data_frame(self, pkt):
+        # Se existe dados sendo transmitidos dos APs para as estações
+        try:
+            src_mac = pkt.wlan.sa
+            dst_mac = pkt.wlan.da
 
-                # removendo caso seja achado
-                if (dst_mac, src_mac) in self.attackers:
-                    self.attackers.remove((dst_mac, src_mac))
+            self.__process(src_mac, dst_mac)
+        except:
+            pass
 
-            # Checando por ataques
-            if dst_mac in self.aps and src_mac not in self.stations:
+    def __process(self, src_mac, dst_mac):
 
-                if (src_mac, dst_mac) in self.attackers:
-                    return None
+        if src_mac in self.aps and dst_mac != 'ff:ff:ff:ff:ff:ff': # Origem AP -  Destino ST
 
-                self.attackers.append((src_mac, dst_mac))
+            if dst_mac not in self.stations:
+                station = Station(mac=dst_mac, ap=src_mac)
+                self.stations[dst_mac] = station
+            else:
+                self.stations[dst_mac].ap = src_mac
 
+            if (dst_mac, src_mac) in self.attackers:
+                del self.attackers[(dst_mac, src_mac)]
+
+        elif dst_mac in self.aps and src_mac not in self.stations: # Checando por ataques
+
+            if (src_mac, dst_mac) in self.attackers:
+                self.attackers[(src_mac, dst_mac)].count += 1
+            else:
+                att = Attacker(src_mac, dst_mac, 1)
+
+                self.attackers[(src_mac, dst_mac)] = att
+        else: # pacote não processado
+            pass
 
     def clear(self):
-        pass
+        self.attackers.clear()
+        self.aps.clear()
+        self.stations.clear()

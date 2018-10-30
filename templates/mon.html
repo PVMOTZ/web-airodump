@@ -10,13 +10,11 @@
         <th>CHANNEL</th>
     </tr>
     {% for ap in aps %}
-        {% if ap.ssid %}
-            <tr>
-                <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
-                <td>{{ ap.ssid }}</td>
-                <td>{{ ap.channel }}</td>
-            </tr>
-        {% endif %}
+    <tr>
+        <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
+        <td>{{ ap.ssid }}</td>
+        <td>{{ ap.channel }}</td>
+    </tr>
     {% endfor %}
 </table>
 
@@ -26,13 +24,11 @@
         <th>BSSID</th>
         <th>CHANNEL</th>
     </tr>
-    {% for ap in aps %}
-        {% if not ap.ssid %}
-            <tr>
-                <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
-                <td>{{ ap.channel }}</td>
-            </tr>
-        {% endif %}
+    {% for ap in hiddens_aps %}
+    <tr>
+        <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
+        <td>{{ ap.channel }}</td>
+    </tr>
     {% endfor %}
 </table>
 
@@ -60,11 +56,13 @@
     <tr>
         <th>MAC</th>
         <th>Atacando</th>
+        <th>Número de Pacotes</th>
     </tr>
-    {% for (attacker, ap) in attackers %}
+    {% for att in attackers %}
         <tr>
-            <td>{{ attacker }}</td>
-            <td>{{ ap }}</td>
+            <td>{{ att.src_mac }}</td>
+            <td>{{ att.dst_mac }}</td>
+            <td>{{ att.count }}</td>
         </tr>
     {% endfor %}
 </table>
