@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 {% block content%}
+<style>
+td,tr{
+border: 1px solid #ddd;
+    padding: 8px
+}
+th {
+    padding-top: 8;
+    padding-bottom: 8px;
+    text-align: left;
+    background-color: #2D6930;
+    color: white;
+}
+table {
+    font-family: Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+#ataques{
+    width:100%;
+    float:right;
+}
 
+</style>
 <div1>
 <h1>APS</h1>
 <table style="width:40%">
@@ -17,7 +39,6 @@
     </tr>
     {% endfor %}
 </table>
-
 <h1>OCULTOS</h1>
 <table style=width:30%>
     <tr>
@@ -31,6 +52,8 @@
     </tr>
     {% endfor %}
 </table>
+
+
 
 </div1>
 
@@ -52,7 +75,7 @@
 
 <div3 align="center">
 <h1>ATAQUES</h1>
-<table style="width:100%">
+<table id="ataques">
     <tr>
         <th>MAC</th>
         <th>Atacando</th>
