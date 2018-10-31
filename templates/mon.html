@@ -21,9 +21,7 @@ table {
     width:100%;
     float:right;
 }
-div4 {
-    float:top-right;
-}
+
 </style>
 <div1>
 <h1>APS</h1>
@@ -37,6 +35,19 @@ div4 {
     <tr>
         <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
         <td>{{ ap.ssid }}</td>
+        <td>{{ ap.channel }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h1>OCULTOS</h1>
+<table style=width:30%>
+    <tr>
+        <th>BSSID</th>
+        <th>CHANNEL</th>
+    </tr>
+    {% for ap in hiddens_aps %}
+    <tr>
+        <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
         <td>{{ ap.channel }}</td>
     </tr>
     {% endfor %}
@@ -80,22 +91,5 @@ div4 {
 </table>
 
 </div3>
-
-<div4>
-<h1>OCULTOS</h1>
-<table style=width:30%>
-    <tr>
-        <th>BSSID</th>
-        <th>CHANNEL</th>
-    </tr>
-    {% for ap in hiddens_aps %}
-    <tr>
-        <td><a href="/ap/{{ ap.mac }}">{{ ap.mac }}</a></td>
-        <td>{{ ap.channel }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-</div4>
 
 {% endblock%}
