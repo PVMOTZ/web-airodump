@@ -33,7 +33,11 @@ class Wairodump():
 
     def get_attackers(self):
 
-        return self.mon.get_attackers()
+        att = self.mon.get_attackers()
+
+        att = [x for x in att if x.count > 0]
+
+        return att
 
     def start_monitoring(self, interface):
         """
