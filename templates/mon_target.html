@@ -1,21 +1,46 @@
 {% extends "base.html" %}
 {% block content%}
 
-<h1>{{ ap.ssid }}</h1> <h1>{{ ap.bssid }}</h1>
+<style>
+td,tr{
+border: 1px solid #ddd;
+    padding: 8px
+}
+th {
+    padding-top: 8;
+    padding-bottom: 8px;
+    text-align: left;
+    background-color: #2D6930;
+    color: white;
+}
+table {
+    font-family: Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+#ataques{
+    width:100%;
+    float:right;
+}
 
-<h2>STATIONS<h2/>
+</style>
 
+<h1>{{ ap.ssid }}</h1>
+<h1>{{ ap.bssid }}</h1>
+
+<h2>STATIONS</h2>
 <table style="width:100%">
-
-{% for st in stations %}
     <tr>
-        <td>{{ st.mac }}</td>
+        <th>MAC</th>
     </tr>
-{% endfor %}
+    {% for st in stations %}
+        <tr>
+            <td>{{ st.mac }}</td>
+        </tr>
+    {% endfor %}
+</table>
 
-{% endblock %}
-
-<h1>ATACANTES</h1>
+<h2>ATACANTES</h2>
 <table style="width:100%">
     <tr>
         <th>MAC</th>
@@ -24,8 +49,9 @@
     {% for att in attackers %}
         <tr>
             <td>{{ att.src_mac }}</td>
-            <td>{{ att.dst_mac }}</td>
             <td>{{ att.count }}</td>
         </tr>
     {% endfor %}
 </table>
+
+{% endblock %}

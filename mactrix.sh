@@ -64,7 +64,7 @@ check_iw_mode $IWIRELESS
 ###########################
 #     Setando o canal     #
 ###########################
-iwconfig $IWIRELESS channel CHANNEL
+iwconfig $IWIRELESS channel $CHANNEL
 
 
 #######################
