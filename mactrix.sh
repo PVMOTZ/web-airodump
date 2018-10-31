@@ -8,13 +8,9 @@
 #                                                   #                               
 # -A interface wireless deve está em modo monitor   #
 #                                                   #  
-# -Se nenhum canal for especifico, os canais 1/6/11 #
-#  seram utilizados                                 # 
+# -Se nenhum canal for especifico, o canal 11 será  #
+#  utilizado                                        #
 #####################################################
-
-#########################
-# Checando dependencias #
-#########################
 
 
 ########################################
@@ -33,6 +29,8 @@ else
   CHANNEL=$2
 fi
 echo "Canais escolhidos: $CHANNEL - OK"
+
+
 ################################################
 # Essa parte do codigo checa se a placa Wifi   #
 # está presente e se está em modo monitor      #
@@ -61,19 +59,15 @@ function check_iw_mode {
 
 check_iw_name $IWIRELESS
 check_iw_mode $IWIRELESS
-#######################
-# Alterando os canais #                      
-#######################
-iwconfig $IWIRELESS channel 1
-iwconfig $IWIRELESS channel 6
-iwconfig $IWIRELESS channel 11
+
+
+###########################
+#     Setando o canal     #
+###########################
+iwconfig $IWIRELESS channel CHANNEL
+
+
 #######################
 # Iniciando o MACTRIX #
 #######################
 sudo python3 flaskapp.py $IWIRELESS
-
-
-
-
-
-          
